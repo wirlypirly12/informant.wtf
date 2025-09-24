@@ -4624,7 +4624,7 @@ function library:CreateSettingsTab(menu)
     configSection:AddBox({text = 'Config Name', flag = 'configinput'})
     configSection:AddList({text = 'Config', flag = 'selectedconfig'})
     creditsSection:AddSeparator({text = 'Owners/Developers'});
-    creditSection:AddText({Text = "wirlypirly12 (melancholy)"})
+    creditsSection:AddText({text = "wirlypirly12 (melancholy)"})
     creditsSection:AddText({text = "xz#1111 (menu)"})
     creditsSection:AddText({text = "goof#1000 (menu)"})
 
