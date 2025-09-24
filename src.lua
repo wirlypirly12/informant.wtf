@@ -4209,7 +4209,6 @@ function library:init()
                         end)
 
                         utility:Connection(objs.holder.MouseButton1Down, function()
-                            window.dropdown:Refresh()
                             if list.open then
                                 list.open = false;
                                 objs.openText.Text = '+';
