@@ -4620,13 +4620,14 @@ function library:CreateSettingsTab(menu)
     local configSection = settingsTab:AddSection('Config', 2);
     local mainSection = settingsTab:AddSection('Main', 1);
     local creditsSection = settingsTab:AddSection('Credits', 2);
+    creditsSection:AddSeparator({text = 'Script Developer'});
+    creditsSection:AddText({text = "wirlypirly12"})
+    creditsSection:AddSeparator({text = 'Menu Developer'});
+    creditsSection:AddText({text = "xz"})
+    creditsSection:AddText({text = "goof"})
 
     configSection:AddBox({text = 'Config Name', flag = 'configinput'})
     configSection:AddList({text = 'Config', flag = 'selectedconfig'})
-    creditsSection:AddSeparator({text = 'Owners/Developers'});
-    creditsSection:AddText({text = "wirlypirly12 (melancholy)"})
-    creditsSection:AddText({text = "xz#1111 (menu)"})
-    creditsSection:AddText({text = "goof#1000 (menu)"})
 
     local function refreshConfigs()
         library.options.selectedconfig:ClearValues();
