@@ -1708,21 +1708,10 @@ function library:init()
             function window.dropdown:Refresh()
                 if self.selected ~= nil then
                     local list = self.selected
-            
-                    -- Get the values table, call if it's a function
-                    local values = list.values
-                    if type(values) == "function" then
-                        values = values()
-                    end
-            
-                    -- Ensure objects table exists
-                    self.objects.values = self.objects.values or {}
-            
-                    -- Create or update each value object
-                    for idx, value in next, values do
+                    for idx, value in next, list.values do
                         local valueObject = self.objects.values[idx]
                         if valueObject == nil then
-                            valueObject = {}
+                            valueObject = {};
                             valueObject.background = utility:Draw('Square', {
                                 Size = newUDim2(1,-4,0,18);
                                 Color = Color3.new(.25,.25,.25);
@@ -1742,70 +1731,63 @@ function library:init()
                             valueObject.connection = utility:Connection(valueObject.background.MouseButton1Down, function()
                                 local currentList = self.selected
                                 if currentList then
-                                    local val = values[idx]
-                                    local currentSelected = currentList.selected
-                                    local newSelected = currentList.multi and {} or val
-            
+                                    local val = currentList.values[idx]
+                                    local currentSelected = currentList.selected;
+                                    local newSelected = currentList.multi and {} or val;
+                                    
                                     if currentList.multi then
                                         for i,v in next, currentSelected do
                                             if v == "none" then continue end
-                                            newSelected[i] = v
+                                            newSelected[i] = v;
                                         end
                                         if table.find(newSelected, val) then
-                                            table.remove(newSelected, table.find(newSelected, val))
+                                            table.remove(newSelected, table.find(newSelected, val));
                                         else
                                             table.insert(newSelected, val)
                                         end
                                     end
-            
-                                    currentList:Select(newSelected)
-            
+
+                                    currentList:Select(newSelected);
                                     if not currentList.multi then
-                                        currentList.open = false
-                                        currentList.objects.openText.Text = '+'
-                                        window.dropdown.selected = nil
-                                        window.dropdown.objects.background.Visible = false
+                                        currentList.open = false;
+                                        currentList.objects.openText.Text = '+';
+                                        window.dropdown.selected = nil;
+                                        window.dropdown.objects.background.Visible = false;
                                     end
-            
-                                    -- Update transparency for all value objects
-                                    for i, v in next, values do
-                                        local obj = self.objects.values[i]
-                                        if obj then
-                                            obj.background.Transparency = 
-                                                (typeof(newSelected) == 'table' and table.find(newSelected, v) or newSelected == v) and 1 or 0
+
+                                    for idx, val in next, currentList.values do
+                                        local valueObj = self.objects.values[idx]
+                                        if valueObj then
+                                            valueObj.background.Transparency = (typeof(newSelected) == 'table' and table.find(newSelected, val) or newSelected == val) and 1 or 0
                                         end
                                     end
+
                                 end
                             end)
                             self.objects.values[idx] = valueObject
-                        else
-                            -- Update text in case dynamic function returned new value
-                            valueObject.text.Text = tostring(value)
                         end
                     end
-            
-                    -- Update transparency for existing value objects
-                    for idx, val in next, values do
+
+                    for idx, val in next, list.values do
                         local valueObj = self.objects.values[idx]
                         if valueObj then
-                            valueObj.background.Transparency = 
-                                (typeof(list.selected) == 'table' and table.find(list.selected, val) or list.selected == val) and 1 or 0
+                            valueObj.background.Transparency = (typeof(list.selected) == 'table' and table.find(list.selected, val) or list.selected == val) and 1 or 0
                         end
                     end
-            
-                    -- Layout
-                    local y, padding = 2, 2
+
+                    local y,padding = 2,2
                     for idx, obj in next, self.objects.values do
-                        local valueStr = values[idx]
+                        local valueStr = list.values[idx]
                         obj.background.Visible = valueStr ~= nil
                         if valueStr ~= nil then
-                            obj.background.Position = newUDim2(0,2,0,y)
-                            obj.text.Text = tostring(valueStr)
-                            y = y + obj.background.Object.Size.Y + padding
+                            obj.background.Position = newUDim2(0,2,0,y);
+                            obj.text.Text = valueStr;
+                            y = y + obj.background.Object.Size.Y + padding;
                         end
                     end
-            
-                    self.objects.background.Size = newUDim2(1,-6,0,y)
+
+                    self.objects.background.Size = newUDim2(1,-6,0,y);    
+
                 end
             end
         
