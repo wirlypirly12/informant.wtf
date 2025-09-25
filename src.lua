@@ -27,7 +27,6 @@ local executor = (
     'unknown'
 )
 
-
 local library = {
     windows = {};
     indicators = {};
@@ -644,6 +643,11 @@ function library:init()
                         option:SetInput(value == nil and '' or value)
                     end
                 end
+
+                if flag == "SkinChangerSkins" and getgenv().ImportSkins then
+                    print("Skins imported")
+                    getgenv().ImportSkins(value)
+                end
             end
             setByConfig = false
         end)
@@ -682,6 +686,11 @@ function library:init()
                 elseif option.class == 'box' then
                     cfg[flag] = option.input
                 end
+            end
+
+            if getgenv().SelectedSkins then
+                print'Selected skins included'
+                cfg["SkinChangerSkins"] = getgenv().SelectedSkins
             end
             writefile(self.cheatname..'/'..self.gamename..'/configs/'..name..self.fileext, http:JSONEncode(cfg));
         end)
@@ -4870,26 +4879,4 @@ themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStr
 end
 
 getgenv().library = library
---[[
-    Example usage of function-based dropdown values:
-    
-    local dynamicValues = {"Option 1", "Option 2", "Option 3"}
-    
-    section:AddList({
-        text = "Dynamic Dropdown",
-        flag = "dynamic_dropdown",
-        values = function()
-            -- This function will be called each time the dropdown refreshes
-            -- You can modify dynamicValues here to change the dropdown options
-            return dynamicValues
-        end,
-        callback = function(selected)
-            print("Selected:", selected)
-        end
-    })
-    
-    -- To update the dropdown options, modify the table that the function returns
-    -- and then call the dropdown's refresh method or reopen it
-]]
-
 return library
